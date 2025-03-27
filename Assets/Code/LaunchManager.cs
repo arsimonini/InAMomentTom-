@@ -19,6 +19,13 @@ public class LaunchManager : MonoBehaviour
     private float currentPower = 0;
     private float currentAngle = 0;
 
+    // Two available modifiers for launch distance / power
+    [Tooltip("Controls the horizontal power applied")]
+
+    public float horizontalLaunchPowerModifier = 1;
+    [Tooltip("Controls the vertical power applied")]
+    public float verticalLaunchPowerModifier = 1;
+
     [Tooltip("Controls the rate the power changes")]
     public float powerChangeSpeed = 1;
     
@@ -27,12 +34,17 @@ public class LaunchManager : MonoBehaviour
 
     // Tracks the current launch state
     public LaunchState cLaunchState = LaunchState.Idle;
+
+    // Scrpit will find the player object in the scene with tag Player
+    private GameObject playerObject;
     
 
     // Start is called before the first frame update
     void Start()
     {
-       InitGUI();
+        // Searches for the first instance of a Player gameobject w/ that tag
+        playerObject = GameObject.FindGameObjectsWithTag("Player")[0];
+        InitGUI();
     }
 
     void Update(){
@@ -119,6 +131,20 @@ public class LaunchManager : MonoBehaviour
     private void LaunchPlayer(){
         // LAUNCH!
         Debug.Log("Player launched with power: " + currentPower + " and angle: " + currentAngle);
+        Debug.DrawLine(playerObject.transform.position, playerObject.transform.position + CalculateAngleForce(), Color.black, 5f);
+        if(playerObject != null){
+            playerObject.GetComponent<Rigidbody>().AddRelativeForce(CalculateAngleForce());
+        }
+    }
+
+    private Vector3 CalculateAngleForce(){
+        float angleDegrees = (currentAngle * 90);
+        Vector3 retValue = new Vector3(
+            (Mathf.Sin(Mathf.PI * angleDegrees / 180) * currentPower) * horizontalLaunchPowerModifier,
+            (Mathf.Cos(Mathf.PI * (angleDegrees) / 180) * currentPower) * verticalLaunchPowerModifier,
+            0f
+            );
+        return retValue;
     }
 
     // Setter for launch state, readable
@@ -127,11 +153,14 @@ public class LaunchManager : MonoBehaviour
     }
 
     private void UpdatePower(){
-        currentPower = currentPower + (Time.deltaTime * powerChangeSpeed);
+        currentPower = MathF.Min(currentPower + (Time.deltaTime * powerChangeSpeed), 1f);
+        if(currentPower == 1f){
+            currentPower = 0;
+        }
     }
 
     private void UpdateAngle(){
-        currentAngle = currentAngle + (Time.deltaTime * angleChangeSpeed);
+        currentAngle = MathF.Min(currentAngle + (Time.deltaTime * angleChangeSpeed), 1f);
     }
 
     private void UpdateGUI(){
