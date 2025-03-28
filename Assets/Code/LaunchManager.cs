@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public enum LaunchState{
@@ -69,6 +70,10 @@ public class LaunchManager : MonoBehaviour
     // This can (and should) be refactored to use the new Unity input manager package if the project gets more complex
     // Due to there only being a couple of inputs for a small project this input manager was deemed appropriate
     private void HandleUpdateInput(){
+
+        if(Input.GetKeyDown(KeyCode.R)){
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
 
         if(cLaunchState == LaunchState.Idle){
 
