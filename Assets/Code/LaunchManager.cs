@@ -137,11 +137,13 @@ public class LaunchManager : MonoBehaviour
         }
     }
 
+    // Calculates force Vector to be applied to object
     private Vector3 CalculateAngleForce(){
-        float angleDegrees = (currentAngle * 90);
+        float angleDegrees = (currentAngle * 180f);
+        float angleRad = angleDegrees * Mathf.Deg2Rad;
         Vector3 retValue = new Vector3(
-            (Mathf.Sin(Mathf.PI * angleDegrees / 180) * currentPower) * horizontalLaunchPowerModifier,
-            (Mathf.Cos(Mathf.PI * (angleDegrees) / 180) * currentPower) * verticalLaunchPowerModifier,
+            (Mathf.Sin(angleRad) * currentPower) * horizontalLaunchPowerModifier,
+            (Mathf.Cos(angleRad) * currentPower) * verticalLaunchPowerModifier,
             0f
             );
         return retValue;
@@ -154,6 +156,8 @@ public class LaunchManager : MonoBehaviour
 
     private void UpdatePower(){
         currentPower = MathF.Min(currentPower + (Time.deltaTime * powerChangeSpeed), 1f);
+
+        // Returns power to 0 to loop
         if(currentPower == 1f){
             currentPower = 0;
         }

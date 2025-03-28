@@ -566,6 +566,7 @@ MonoBehaviour:
   chunkCount: 6
   chunkWidth: 120
   chunkLength: 60
+  deadZone: 10
 --- !u!4 &432441496
 Transform:
   m_ObjectHideFlags: 0
@@ -688,7 +689,7 @@ MonoBehaviour:
   horizontalLaunchPowerModifier: 3000
   verticalLaunchPowerModifier: 2500
   powerChangeSpeed: 3
-  angleChangeSpeed: 1
+  angleChangeSpeed: 0.8
   cLaunchState: 0
 --- !u!4 &630801388
 Transform:
@@ -887,6 +888,7 @@ GameObject:
   - component: {fileID: 813963754}
   - component: {fileID: 813963753}
   - component: {fileID: 813963752}
+  - component: {fileID: 813963757}
   m_Layer: 0
   m_Name: PlayerObj
   m_TagString: Player
@@ -1010,6 +1012,18 @@ Transform:
   - {fileID: 2019812226}
   m_Father: {fileID: 1987885304}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &813963757
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 813963751}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4112c03373264716b0f1102b4a31968, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &856516328
 GameObject:
   m_ObjectHideFlags: 0
