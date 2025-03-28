@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,6 +11,10 @@ public class PlayerController : MonoBehaviour
 
     // Public spped modifier variable
     public float moveSpeed = 1;
+
+    // Drag multipler effects how much drag is applied on movement
+    // Scalar value to the axisInput (1 is all the way pressed down)
+    public float dragModifier = 0.3f;
     void Start()
     {
         if(!TryGetComponent<Rigidbody>(out rb)){
@@ -30,5 +35,8 @@ public class PlayerController : MonoBehaviour
         float axisInput = Input.GetAxis("Horizontal");
         Vector3 moveVector = transform.right * axisInput;
         rb.MovePosition(transform.position + moveVector * Time.fixedDeltaTime * moveSpeed);   
+
+        // Cute way to add drag relative to input ( 0 - 1)
+        rb.drag = MathF.Abs(axisInput * dragModifier);
     }
 }
