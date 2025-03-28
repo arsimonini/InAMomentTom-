@@ -32,6 +32,10 @@ public class LaunchManager : MonoBehaviour
     [Tooltip("Controls the rate the angle changes")]
     public float angleChangeSpeed = 1;
 
+    // Angle bounds
+    public float startAngle = 90f;
+    public float endAngle = -45f; 
+
     // Tracks the current launch state
     public LaunchState cLaunchState = LaunchState.Idle;
 
@@ -139,11 +143,12 @@ public class LaunchManager : MonoBehaviour
 
     // Calculates force Vector to be applied to object
     private Vector3 CalculateAngleForce(){
-        float angleDegrees = (currentAngle * 180f);
+        // Interpolate between the start angle and end angle (currentAngle is 0 - 1)
+        float angleDegrees = Mathf.Lerp(startAngle, endAngle, currentAngle);
         float angleRad = angleDegrees * Mathf.Deg2Rad;
         Vector3 retValue = new Vector3(
-            (Mathf.Sin(angleRad) * currentPower) * horizontalLaunchPowerModifier,
-            (Mathf.Cos(angleRad) * currentPower) * verticalLaunchPowerModifier,
+            (Mathf.Cos(angleRad) * currentPower) * horizontalLaunchPowerModifier,
+            (Mathf.Sin(angleRad) * currentPower) * verticalLaunchPowerModifier,
             0f
             );
         return retValue;
