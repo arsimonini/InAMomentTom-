@@ -137,7 +137,7 @@ public class LaunchManager : MonoBehaviour
         Debug.Log("Player launched with power: " + currentPower + " and angle: " + currentAngle);
         Debug.DrawLine(playerObject.transform.position, playerObject.transform.position + CalculateAngleForce(), Color.black, 5f);
         if(playerObject != null){
-            playerObject.GetComponent<Rigidbody>().AddRelativeForce(CalculateAngleForce());
+            playerObject.GetComponent<Rigidbody>().AddForce(CalculateAngleForce());
         }
     }
 
@@ -146,11 +146,9 @@ public class LaunchManager : MonoBehaviour
         // Interpolate between the start angle and end angle (currentAngle is 0 - 1)
         float angleDegrees = Mathf.Lerp(startAngle, endAngle, currentAngle);
         float angleRad = angleDegrees * Mathf.Deg2Rad;
-        Vector3 retValue = new Vector3(
-            (Mathf.Cos(angleRad) * currentPower) * horizontalLaunchPowerModifier,
-            (Mathf.Sin(angleRad) * currentPower) * verticalLaunchPowerModifier,
-            0f
-            );
+        // Uses the player object's orientation to apply the vector
+        Vector3 retValue = ( playerObject.transform.forward * (Mathf.Cos(angleRad * currentPower) * horizontalLaunchPowerModifier) ) 
+                            + (playerObject.transform.up * (Mathf.Sin(angleRad * currentPower) * verticalLaunchPowerModifier));
         return retValue;
     }
 
