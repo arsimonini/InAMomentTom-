@@ -16,6 +16,8 @@ public class GameManager : MonoBehaviour
     public UpgradeManager upgradeManager;
     public PlayerController playerController;
 
+    public GameState currentGameState;
+
     // Start is called before the first frame update
     void OnEnable()
     {
@@ -68,16 +70,33 @@ public class GameManager : MonoBehaviour
         return upgradeManager;
     }
 
+    public GameState GetGameState(){
+        return currentGameState;
+    }
+    public void SetGameState(GameState gameState){
+        currentGameState = gameState;
+    }
+
     public GameObject GetPlayerObject(){
         // Assuming the playerController is the object the script is attached to
         return playerController.gameObject;
+    }
+
+    public void ResetPlayer(){
+        if(currentGameState == GameState.Launched){
+            // Should go to upgrades, TODO: Set gamestate to upgrading instead
+            SetGameState(GameState.Launching);
+            launchManager.RestartLauncherState();
+            playerController.ResetPlayer();
+        }
+        
     }
 
     // Update is called once per frame
     void Update()
     {
         if(Input.GetKeyDown(KeyCode.R)){
-            launchManager.RestartLauncherState();
+            ResetPlayer();
         }
     }
 }

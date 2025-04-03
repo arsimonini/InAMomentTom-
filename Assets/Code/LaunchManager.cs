@@ -144,7 +144,6 @@ public class LaunchManager : MonoBehaviour
     private void TransitionToPower(){
         // Much more can be added
         // Place to add visual or UI effects
-        Debug.Log("Transitioned to power state!");
         // Set the new launch state
         SetLaunchState(LaunchState.Power);
     }
@@ -152,7 +151,6 @@ public class LaunchManager : MonoBehaviour
     private void TransitionToAngle(){
         // Much mroe can be added
         // ... can add visual or UI effects
-        Debug.Log("Transition to Angle state!");
         // Set new launch state
         SetLaunchState(LaunchState.Angle);
 
@@ -170,8 +168,14 @@ public class LaunchManager : MonoBehaviour
         // LAUNCH!
         Debug.Log("Player launched with power: " + currentPower + " and angle: " + currentAngle);
         Debug.DrawLine(playerObject.transform.position, playerObject.transform.position + CalculateAngleForce(), Color.black, 5f);
+        
+        // Set the game manager's game state to launched
+        GM.SetGameState(GameState.Launched);
+
         if(playerObject != null){
             playerObject.GetComponent<Rigidbody>().AddForce(CalculateAngleForce());
+        }else{
+            Debug.LogError("Player object not found");
         }
     }
 

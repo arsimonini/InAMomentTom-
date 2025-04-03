@@ -21,13 +21,17 @@ public class PlayerController : MonoBehaviour
     // Drag multipler effects how much drag is applied on movement
     // Scalar value to the axisInput (1 is all the way pressed down)
     public float dragModifier = 0.3f;
+
+    // Add a flag to see if the player has hit the ground this run
+    public bool hasHitGround = false;
+    // Threshold where a player gets reset from velocity
+    public float resetPlayerVelocityThreshold = 0.01f;
     void Start()
     {
         if(!TryGetComponent<Rigidbody>(out rb)){
             Debug.LogError("PlayerController can't find a RigidBody!");
         }
 
-        // Commented out as not necessary right now
         ResetPlayerTransform();
 
     }
@@ -35,6 +39,12 @@ public class PlayerController : MonoBehaviour
     private void ResetPlayerTransform(){
         transform.position = startTransform.position;
         transform.rotation = startTransform.rotation;
+    }
+
+    private void ResetPlayerRigidbody(){
+        // Reset rigidbody data
+        rb.velocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
     }
 
     private void PrintDistance(){
@@ -50,7 +60,10 @@ public class PlayerController : MonoBehaviour
     {
         // Safety check conf. RB exist
         if(rb != null){
+            // Apply movement logic
             ApplyMove();
+            // Check for player stopping
+            CheckIsPlayerStopped();
         }
     }
 
@@ -67,5 +80,28 @@ public class PlayerController : MonoBehaviour
 
         // Cute way to add drag relative to input ( 0 - 1)
         rb.drag = MathF.Abs(axisInput * dragModifier);
+    }
+
+    private void CheckIsPlayerStopped(){
+        // If the player has a low enough velocity and has hit the ground reset
+        if(rb.velocity.magnitude <= resetPlayerVelocityThreshold && hasHitGround){
+            GM.ResetPlayer();
+        }
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.tag == "Respawn"){
+            hasHitGround = true;
+        }
+    }
+
+    public void ResetPlayer(){
+        // Reset hasHitGround flag
+        hasHitGround = false;
+        // Reset RB
+        ResetPlayerRigidbody();
+        // Reset Transform
+        ResetPlayerTransform();
     }
 }

@@ -562,6 +562,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   launchManager: {fileID: 0}
+  upgradeManager: {fileID: 0}
+  playerController: {fileID: 0}
+  currentGameState: 0
 --- !u!4 &226620756
 Transform:
   m_ObjectHideFlags: 0
@@ -1104,6 +1107,8 @@ MonoBehaviour:
   moveSpeed: 1
   startTransform: {fileID: 283871710}
   dragModifier: 0.3
+  hasHitGround: 0
+  resetPlayerVelocityThreshold: 0.09
 --- !u!1 &856516328
 GameObject:
   m_ObjectHideFlags: 0
