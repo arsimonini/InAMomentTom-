@@ -1,0 +1,59 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class UpgradeManager : MonoBehaviour
+{
+
+    /*
+            -- Sprint 1
+            Increase Launch Power
+            Decrease Air Resistance (Side Movement)
+            Increase Speedometer Limit (Forward Movement)
+            Increase Revenue Gain
+            Stuffed Suitcase - Unlocks Suitcase Bouncing, then increase Bounce potency
+             Increase Air Movement
+
+
+            ----
+            Coffee - Unlocks Caffeine Boost Mode, then increases how much Coffee is in cup per launch
+            Decrease Ragdolling
+            Decrease Bounce Slow Down
+            Headphones - Unlocks sick tunes to play when launching plus radio exerts
+            Decrease Police Car Potency
+            Decrease Lemonade Stand 
+            Increase Manhole Potency
+            Increase Drone Potency
+            Increase Bubblegum Potency
+            Increase Balloon Potency
+            Increase Car Potency
+    */
+
+    public float launchPowerModifierUpgrade = 1f;
+    public float movementDragModifier = 1f;
+    public float speedometerLimit = 150f;
+    public float incomeModifier = 1f;
+
+    private GameManager GM;
+
+    public float getLaunchPowerModifier(){
+        return launchPowerModifierUpgrade;
+    }
+
+    // Game Manager setting function, allows for the manager to get set on find
+    public void SetGameManager(GameManager gameManager){
+        GM = gameManager;
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
+}

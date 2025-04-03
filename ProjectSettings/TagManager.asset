@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - UI_Canvas
+  - UpgradeManager
+  - LaunchManager
   layers:
   - Default
   - TransparentFX

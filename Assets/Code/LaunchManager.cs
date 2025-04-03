@@ -21,11 +21,17 @@ public class LaunchManager : MonoBehaviour
     private float currentAngle = 0;
 
     // Two available modifiers for launch distance / power
-    [Tooltip("Controls the horizontal power applied")]
 
-    public float horizontalLaunchPowerModifier = 1;
+    private float horizontalLaunchPowerModifier = 1;
+    // Tuner is applied to the launch power after upgrade power is applied
+    // Used for horizontal vs vertical tuning
+    [Tooltip("Controls the horizontal power applied")]
+    public float horizontalLaunchPowerTuner = 1f;
+    
+    private float verticalLaunchPowerModifier = 1;
+    // tuner is applied ~~
     [Tooltip("Controls the vertical power applied")]
-    public float verticalLaunchPowerModifier = 1;
+    public float verticalLaunchPowerTuner = 1f;
 
     [Tooltip("Controls the rate the power changes")]
     public float powerChangeSpeed = 1;
@@ -40,16 +46,22 @@ public class LaunchManager : MonoBehaviour
     // Tracks the current launch state
     public LaunchState cLaunchState = LaunchState.Idle;
 
-    // Scrpit will find the player object in the scene with tag Player
+    // Script will find the player object in the scene with tag Player
     private GameObject playerObject;
+
+    private UpgradeManager upgradeManager;
     
+    private GameManager GM;
 
     // Start is called before the first frame update
     void Start()
     {
         // Searches for the first instance of a Player gameobject w/ that tag
-        playerObject = GameObject.FindGameObjectsWithTag("Player")[0];
-        InitGUI();
+        playerObject = GM.GetPlayerObject();
+        // Searches for the first instance of an UpgradeManager gameobject
+        upgradeManager = GM.GetUpgradeManager();
+        
+        RestartLauncherState();
     }
 
     void Update(){
@@ -61,6 +73,27 @@ public class LaunchManager : MonoBehaviour
         }
     }
 
+    // Game Manager setting function, allows for the manager to get set on find
+    public void SetGameManager(GameManager gameManager){
+        GM = gameManager;
+    }
+
+    public void RestartLauncherState(){
+        // Restarting the launcher state should properly reset all held variables
+        cLaunchState = LaunchState.Idle;
+        currentAngle = 0;
+        currentPower = 0;
+        // Catch any new Upgraded values
+        UpdateUpgradeValues();
+        // Re-initialize GUI
+        InitGUI();
+    }
+
+    private void UpdateUpgradeValues(){
+        horizontalLaunchPowerModifier = upgradeManager.getLaunchPowerModifier() * horizontalLaunchPowerTuner;
+        verticalLaunchPowerModifier = upgradeManager.getLaunchPowerModifier() * verticalLaunchPowerTuner;
+    }
+
     // Takes input management into its own class
     // THIS USES THE "ActionKey" INPUT BUTTON
     // THIS CAN BE MODIFIED IN THE:
@@ -70,10 +103,6 @@ public class LaunchManager : MonoBehaviour
     // This can (and should) be refactored to use the new Unity input manager package if the project gets more complex
     // Due to there only being a couple of inputs for a small project this input manager was deemed appropriate
     private void HandleUpdateInput(){
-
-        if(Input.GetKeyDown(KeyCode.R)){
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        }
 
         if(cLaunchState == LaunchState.Idle){
 
