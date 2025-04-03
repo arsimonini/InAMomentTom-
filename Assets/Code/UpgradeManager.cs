@@ -40,6 +40,10 @@ public class UpgradeManager : MonoBehaviour
         return launchPowerModifierUpgrade;
     }
 
+    public float getMovementDragModifier(){
+        return movementDragModifier;
+    }
+
     // Game Manager setting function, allows for the manager to get set on find
     public void SetGameManager(GameManager gameManager){
         GM = gameManager;

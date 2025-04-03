@@ -32,6 +32,8 @@ public class PlayerController : MonoBehaviour
             Debug.LogError("PlayerController can't find a RigidBody!");
         }
 
+        dragModifier = GM.GetUpgradeManager().getMovementDragModifier();
+
         ResetPlayerTransform();
 
     }

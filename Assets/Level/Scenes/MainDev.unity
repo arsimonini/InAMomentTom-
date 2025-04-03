@@ -1648,7 +1648,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   launchPowerModifierUpgrade: 1000
-  movementDragModifier: 1
+  movementDragModifier: 0.01
   speedometerLimit: 150
   incomeModifier: 1
 --- !u!4 &1468355956
