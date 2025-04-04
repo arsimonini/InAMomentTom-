@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -34,7 +35,15 @@ public class UpgradeManager : MonoBehaviour
     public float speedometerLimit = 150f;
     public float incomeModifier = 1f;
 
+    // Economy variables start
+    public float currentMoney = 0;
+
     private GameManager GM;
+
+    public void TravelDistance(float distance){
+        currentMoney += (distance * incomeModifier);
+        GM.GetPlayerUICanvas().setMoneyText(currentMoney);
+    }
 
     public float getLaunchPowerModifier(){
         return launchPowerModifierUpgrade;

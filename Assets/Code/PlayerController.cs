@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
 
     // Initial transform to reset to and calc from
     public Transform startTransform;
+    private float prevX;
 
     // GameManager object
     private GameManager GM;
@@ -26,6 +27,12 @@ public class PlayerController : MonoBehaviour
     public bool hasHitGround = false;
     // Threshold where a player gets reset from velocity
     public float resetPlayerVelocityThreshold = 0.01f;
+    // Reset backup delay in seconds
+    public float resetDelaySeconds = 3.0f;
+
+    // Async routine to reset the player 
+    private Coroutine resetCoroutine;
+
     void Start()
     {
         if(!TryGetComponent<Rigidbody>(out rb)){
@@ -39,6 +46,7 @@ public class PlayerController : MonoBehaviour
     }
 
     private void ResetPlayerTransform(){
+        // Apply resets
         transform.position = startTransform.position;
         transform.rotation = startTransform.rotation;
     }
@@ -49,19 +57,25 @@ public class PlayerController : MonoBehaviour
         rb.angularVelocity = Vector3.zero;
     }
 
-    private void PrintDistance(){
-        Debug.Log("" + (transform.position.x - startTransform.position.x));
+    private void CalculateDistance(){
+        // Apply distance-dependent calculations
+        GM.GetUpgradeManager().TravelDistance(MathF.Abs(transform.position.x - prevX));
+        // Update the previous X position to the current
+        prevX = transform.position.x;
     }
 
     void Update()
     {
-        //PrintDistance();
+        // If the player is launched collect money
+        if(GM.GetGameState() == GameState.Launched){
+            CalculateDistance();
+        }
     }
 
     void FixedUpdate()
     {
         // Safety check conf. RB exist
-        if(rb != null){
+        if(rb != null && GM.GetGameState() == GameState.Launched){
             // Apply movement logic
             ApplyMove();
             // Check for player stopping
@@ -95,6 +109,8 @@ public class PlayerController : MonoBehaviour
     {
         if(collision.gameObject.tag == "Respawn"){
             hasHitGround = true;
+            // Begin the reset timer
+            StartResetTimer();
         }
     }
 
@@ -105,5 +121,22 @@ public class PlayerController : MonoBehaviour
         ResetPlayerRigidbody();
         // Reset Transform
         ResetPlayerTransform();
+    }
+
+    public void StartResetTimer()
+    {
+        // Confirm the reset timer hasn't already started
+        if (resetCoroutine == null)
+        {
+            resetCoroutine = StartCoroutine(DelayedReset());
+        }
+    }
+
+    private IEnumerator DelayedReset()
+    {
+        // Wait X async, then reset
+        yield return new WaitForSeconds(resetDelaySeconds);
+        GM.ResetPlayer();
+        resetCoroutine = null;
     }
 }

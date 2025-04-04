@@ -43,12 +43,21 @@ public class WorldGenManager : MonoBehaviour
         SpawnBuildings();
     }
 
-    private void SpawnBuildings(){
+    public void SpawnBuildings(){
+
+        ClearAllChildren();
 
         for(int i = 0; i < chunkCount; i++){
             GenerateChunk(i);
         }
 
+    }
+
+    private void ClearAllChildren(){
+        foreach(Transform child in transform)
+        {
+            Destroy(child.gameObject);
+        }
     }
 
     private void GenerateChunk(int chunkNumber){

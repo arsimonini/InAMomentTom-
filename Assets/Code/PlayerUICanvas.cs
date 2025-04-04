@@ -14,6 +14,9 @@ public class PlayerUICanvas : MonoBehaviour
     // Reference to a debug text, can be removed later
     public TextMeshProUGUI debugText;
 
+    // Reference to money text
+    public TextMeshProUGUI money;
+
     // Getters aren't super necessary as of now esp. bc this is a debug
     public float getPowerSliderValue(){
         return powerSlider.value;
@@ -32,6 +35,10 @@ public class PlayerUICanvas : MonoBehaviour
     public void setAngleSliderValue(float val){
         angleSlider.value = val;
         UpdateDebugUI();
+    }
+
+    public void setMoneyText(float val){
+        money.text = "$" + val.ToString("0");
     }
 
     private void UpdateDebugUI(){

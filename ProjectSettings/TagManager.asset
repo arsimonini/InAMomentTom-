@@ -7,6 +7,7 @@ TagManager:
   - UI_Canvas
   - UpgradeManager
   - LaunchManager
+  - WorldGeneratorManager
   layers:
   - Default
   - TransparentFX
