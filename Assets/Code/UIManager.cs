@@ -16,8 +16,6 @@ public class UIManager : MonoBehaviour
         return upgradeUICanvas;
     }
 
-
-
     public void SetUIModeLaunch(){
         playerUICanvas.gameObject.SetActive(true);
         upgradeUICanvas.gameObject.SetActive(false);

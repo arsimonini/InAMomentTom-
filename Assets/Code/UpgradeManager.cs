@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class UpgradeManager : MonoBehaviour
@@ -38,11 +39,15 @@ public class UpgradeManager : MonoBehaviour
     // Economy variables start
     public float currentMoney = 0;
 
+    // Upgrades start
+    public List<UpgradeObj> upgrades;
+
     private GameManager GM;
 
     public void TravelDistance(float distance){
         currentMoney += (distance * incomeModifier);
         GM.GetUIManager().GetPlayerUICanvas().setMoneyText(currentMoney);
+        GM.GetUIManager().GetUpgradeUICanvas().setMoneyText(currentMoney);
     }
 
     public float getLaunchPowerModifier(){
@@ -58,10 +63,19 @@ public class UpgradeManager : MonoBehaviour
         GM = gameManager;
     }
 
+    // Initialize the upgrades UI
+    private void InitializeUI(){
+        UpgradeUICanvas uiCanvas = GM.GetUIManager().GetUpgradeUICanvas();
+        foreach (UpgradeObj upgradeObj in upgrades){
+            uiCanvas.CreateUpgradeButton(upgradeObj);
+        }
+        
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        InitializeUI();
     }
 
     // Update is called once per frame

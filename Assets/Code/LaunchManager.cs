@@ -166,8 +166,6 @@ public class LaunchManager : MonoBehaviour
 
     private void LaunchPlayer(){
         // LAUNCH!
-        Debug.Log("Player launched with power: " + currentPower + " and angle: " + currentAngle);
-        Debug.DrawLine(playerObject.transform.position, playerObject.transform.position + CalculateAngleForce(), Color.black, 5f);
         
         // Set the game manager's game state to launched
         GM.SetGameState(GameState.Launched);
