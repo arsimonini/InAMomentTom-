@@ -214,12 +214,6 @@ public class LaunchManager : MonoBehaviour
     }
 
     private void InitGUI(){
-        GameObject ui_Canvas = GameObject.FindWithTag("UI_Canvas");
-        if(ui_Canvas != null){
-            playerUICanvas = ui_Canvas.GetComponent<PlayerUICanvas>();
-        }else{
-            // Debug statement can be removed later
-            Debug.LogError("GUI Failed to Initialize");
-        }
+        playerUICanvas = GM.GetUIManager().GetPlayerUICanvas();
     }
 }

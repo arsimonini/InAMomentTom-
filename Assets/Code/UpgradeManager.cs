@@ -42,7 +42,7 @@ public class UpgradeManager : MonoBehaviour
 
     public void TravelDistance(float distance){
         currentMoney += (distance * incomeModifier);
-        GM.GetPlayerUICanvas().setMoneyText(currentMoney);
+        GM.GetUIManager().GetPlayerUICanvas().setMoneyText(currentMoney);
     }
 
     public float getLaunchPowerModifier(){

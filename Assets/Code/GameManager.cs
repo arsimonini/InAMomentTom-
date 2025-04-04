@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using OpenCover.Framework.Model;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public enum GameState{
@@ -15,7 +16,8 @@ public class GameManager : MonoBehaviour
     public LaunchManager launchManager;
     public UpgradeManager upgradeManager;
     public PlayerController playerController;
-    public PlayerUICanvas playerUICanvas;
+
+    public UIManager uiManager;
     public WorldGenManager worldGenManager;
 
     public GameState currentGameState;
@@ -57,15 +59,15 @@ public class GameManager : MonoBehaviour
             playerController.SetGameManager(this);
         }
 
-        playerUICanvas = GameObject.FindGameObjectsWithTag("UI_Canvas")[0].GetComponent <PlayerUICanvas>();
-        if(playerUICanvas == null){
-            Debug.LogError("Player UI failed to load!");
-            return false;
-        }
-
         worldGenManager = GameObject.FindGameObjectsWithTag("WorldGeneratorManager")[0].GetComponent<WorldGenManager>();
         if(worldGenManager == null){
             Debug.LogError("WorldGenManager failed to load!");
+            return false;
+        }
+
+        uiManager = GameObject.FindGameObjectsWithTag("UIManager")[0].GetComponent<UIManager>();
+        if(uiManager == null){
+            Debug.LogError("UI Manager failed to load");
             return false;
         }
 
@@ -84,8 +86,8 @@ public class GameManager : MonoBehaviour
         return upgradeManager;
     }
 
-    public PlayerUICanvas GetPlayerUICanvas(){
-        return playerUICanvas;
+    public UIManager GetUIManager(){
+        return uiManager;
     }
 
     public GameState GetGameState(){
@@ -102,15 +104,26 @@ public class GameManager : MonoBehaviour
 
     public void ResetPlayer(){
         if(currentGameState == GameState.Launched){
-            // Should go to upgrades, TODO: Set gamestate to upgrading instead
-            SetGameState(GameState.Launching);
-
-            launchManager.RestartLauncherState();
-            playerController.ResetPlayer();
-            // Every time the player resets, spawn a new world
-            worldGenManager.SpawnBuildings();
+            ResetAfterLaunch();
         }
-        
+    }
+
+
+    public void ResetAfterLaunch(){
+        // Should go to upgrades, TODO: Set gamestate to upgrading instead
+        SetGameState(GameState.Upgrading);
+        // Set the UI to upgrade mode
+        uiManager.SetUIModeUpgrade();
+    }
+    public void PrepareForLaunch(){
+        // Every time the player resets, spawn a new world
+        worldGenManager.SpawnBuildings();
+        // Reset the player at the launch spot
+        playerController.ResetPlayer();
+        // Prepare the launch manager for launch again
+        launchManager.RestartLauncherState();
+        // Set the UI to launch mode
+        uiManager.SetUIModeLaunch();
     }
 
     // Update is called once per frame
