@@ -29,12 +29,7 @@ public class UIManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        upgradeUICanvas.gameObject.SetActive(false);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        // TODO - This shouldn't just default here
+        SetUIModeLaunch();
     }
 }

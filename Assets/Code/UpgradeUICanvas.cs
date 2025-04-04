@@ -22,26 +22,17 @@ public class UpgradeUICanvas : MonoBehaviour
     }
 
     public void CreateUpgradeButton(UpgradeObj upgrade){
+        // Create a new empty upgrade button to populate
         GameObject newButton = Instantiate(upgradeButtonPrefab, upgradeButtonContainerPanel);
+        // Populate base icon and onclick event
         newButton.GetComponent<Image>().sprite = upgrade.icon;
         newButton.GetComponent<Button>().onClick.AddListener(() => UpdateCurrentUpgradeUI(upgrade));
     }
 
     public void UpdateCurrentUpgradeUI(UpgradeObj upgradeObj){
+        // Update the info pane with relevant info on click
         cUpgradeSprite.sprite = upgradeObj.icon;
         cUpgradeTitle.text = upgradeObj.upgradeName;
         cUpgradeDescription.text = upgradeObj.upgradeDescription;
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

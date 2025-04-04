@@ -108,7 +108,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
     public void ResetAfterLaunch(){
         // Should go to upgrades, TODO: Set gamestate to upgrading instead
         SetGameState(GameState.Upgrading);
@@ -124,6 +123,18 @@ public class GameManager : MonoBehaviour
         launchManager.RestartLauncherState();
         // Set the UI to launch mode
         uiManager.SetUIModeLaunch();
+    }
+
+    public void CloseGame(){
+        // Some funky stuff to make sure it exits properly
+        #if UNITY_STANDALONE
+            // Application quit doesn't work in editor
+            Application.Quit();
+        #endif
+        #if UNITY_EDITOR
+            // Base set for editor to make it feel right in editor
+            UnityEditor.EditorApplication.isPlaying = false;
+        #endif
     }
 
     // Update is called once per frame
