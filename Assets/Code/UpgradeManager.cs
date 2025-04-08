@@ -39,6 +39,9 @@ public class UpgradeManager : MonoBehaviour
     // Economy variables start
     public float currentMoney = 0;
 
+    // Boucne mod
+    public float bounceModifier = 1f;
+
     // Upgrades start
     public List<UpgradeObj> upgrades;
 
@@ -46,8 +49,16 @@ public class UpgradeManager : MonoBehaviour
 
     public void TravelDistance(float distance){
         currentMoney += (distance * incomeModifier);
+        UpdateUIMoney();
+    }
+
+    public void UpdateUIMoney(){
         GM.GetUIManager().GetPlayerUICanvas().setMoneyText(currentMoney);
         GM.GetUIManager().GetUpgradeUICanvas().setMoneyText(currentMoney);
+    }
+
+    public float getMovementBounceForce(){
+        return bounceModifier;
     }
 
     public float getLaunchPowerModifier(){
@@ -67,9 +78,37 @@ public class UpgradeManager : MonoBehaviour
     private void InitializeUI(){
         UpgradeUICanvas uiCanvas = GM.GetUIManager().GetUpgradeUICanvas();
         foreach (UpgradeObj upgradeObj in upgrades){
-            uiCanvas.CreateUpgradeButton(upgradeObj);
+            uiCanvas.CreateUpgradeButton(upgradeObj, this);
         }
         
+    }
+
+    public void UpgradeField(UpgradeObj upgradeObj){
+        string upgradeID = upgradeObj.upgradeID;
+        float currentCost = upgradeObj.GetCostAtLevel(upgradeObj.GetCurrentLevel());
+        if(currentMoney <= currentCost){
+            return;
+        }else{
+            currentMoney -= currentCost;
+            upgradeObj.currentLevel++;
+            UpdateUIMoney();
+        }
+
+        switch (upgradeID){
+            case "LAUNCH_POWER":
+                launchPowerModifierUpgrade += 100f;
+                break;
+            case "DRAG_MOD":
+                movementDragModifier -= 0.001f;
+                break;
+            case "BOUNCE_MOD":
+                bounceModifier += 5f;
+                break;
+            default:
+                break;
+        }
+
+        GM.ApplyUpgrades();
     }
 
     // Start is called before the first frame update
