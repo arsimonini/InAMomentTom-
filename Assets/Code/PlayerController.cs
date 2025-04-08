@@ -33,16 +33,37 @@ public class PlayerController : MonoBehaviour
     // Async routine to reset the player 
     private Coroutine resetCoroutine;
 
+    public GameObject briefcase;
+    private bool isBriefcaseOn = false;
+    public float briefcaseOffset = 0.1f;
+    private float bounceForce = 10f;
+    [Tooltip("Vertical distance threshold to consider the player as 'in contact' with the Respawn object.")]
+    public float contactThreshold = 0.5f;
+    private Transform respawnTransform;
+
     void Start()
     {
         if(!TryGetComponent<Rigidbody>(out rb)){
             Debug.LogError("PlayerController can't find a RigidBody!");
         }
 
-        dragModifier = GM.GetUpgradeManager().getMovementDragModifier();
+        GetUpgradeValues();
 
         ResetPlayerTransform();
 
+        respawnTransform = GameObject.FindGameObjectsWithTag("Respawn")[0].transform;
+
+        if (briefcase != null)
+        {
+            briefcase.GetComponent<Renderer>().enabled = false;
+            isBriefcaseOn = false;
+        }
+
+    }
+
+    public void GetUpgradeValues(){
+        dragModifier = GM.GetUpgradeManager().getMovementDragModifier();
+        bounceForce = GM.GetUpgradeManager().getMovementBounceForce();
     }
 
     private void ResetPlayerTransform(){
@@ -69,7 +90,40 @@ public class PlayerController : MonoBehaviour
         // If the player is launched collect money
         if(GM.GetGameState() == GameState.Launched){
             CalculateDistance();
+        
+            // Basic briefcase input
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                if (briefcase != null)
+                {
+                    briefcase.GetComponent<Renderer>().enabled = true;
+                    isBriefcaseOn = true;
+                }
+            }
+            
+            // Update the briefcase's position if it's active.
+            if (briefcase != null && isBriefcaseOn)
+            {
+                // Position directly below the player (ign player rotation)
+                Vector3 targetPosition = transform.position + Vector3.down * briefcaseOffset;
+                briefcase.transform.position = targetPosition;
+                // Reset the briefcase's rotation so it always stays upright
+                briefcase.transform.rotation = Quaternion.identity;
+            }
+
+            // When the key is released, deactivate the briefcase.
+            if (Input.GetKeyUp(KeyCode.Space))
+            {
+                if (briefcase != null)
+                {
+                    briefcase.GetComponent<Renderer>().enabled = false;
+                    isBriefcaseOn = false;
+                }
+            }
+        
         }
+
+        
     }
 
     void FixedUpdate()
@@ -80,9 +134,23 @@ public class PlayerController : MonoBehaviour
             ApplyMove();
             // Check for player stopping
             CheckIsPlayerStopped();
+
+            // Check for bounce
+            CheckForBriefcaseBounce();
         }
     }
 
+
+    public void CheckForBriefcaseBounce(){
+        if(isBriefcaseOn){
+            float distanceY = transform.position.y - respawnTransform.position.y;
+            if(distanceY <= contactThreshold){
+                if(rb.velocity.y < 0){
+                    rb.AddForce(Vector3.up * bounceForce, ForceMode.Impulse);
+                }
+            }
+        }
+    }
     // Game Manager setting function, allows for the manager to get set on find
     public void SetGameManager(GameManager gameManager){
         GM = gameManager;
@@ -121,6 +189,9 @@ public class PlayerController : MonoBehaviour
         ResetPlayerRigidbody();
         // Reset Transform
         ResetPlayerTransform();
+
+        // Stop all coroutines
+        StopAllCoroutines();
     }
 
     public void StartResetTimer()
@@ -139,4 +210,5 @@ public class PlayerController : MonoBehaviour
         GM.ResetPlayer();
         resetCoroutine = null;
     }
+    
 }

@@ -25,7 +25,6 @@ public class UpgradeObj : ScriptableObject
     }
 
     public void Upgrade(){
-        Debug.Log("Upgrade " + upgradeName + " upgrade attempted");
         if(currentLevel < numLevels - 1){
             currentLevel++;
         }

@@ -108,6 +108,10 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void ApplyUpgrades(){
+        playerController.GetUpgradeValues();
+    }
+
     public void ResetAfterLaunch(){
         // Should go to upgrades, TODO: Set gamestate to upgrading instead
         SetGameState(GameState.Upgrading);
