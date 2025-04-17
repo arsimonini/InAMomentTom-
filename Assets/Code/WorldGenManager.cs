@@ -26,6 +26,22 @@ public class WorldGenManager : MonoBehaviour
     // Prefab to fill chunks
     public GameObject buildingPrefab;
 
+    // Baseplate chunks
+    public GameObject baseplatePrefab;
+
+    // Chunk types as follows:
+    // Filler - Open spaces for the start
+    // Blocks - Main chunks for distance
+    // Blocker - Chunks with a blocker at their end
+    public GameObject[] fillers;
+    public GameObject[] cityBlocks;
+    public GameObject[] blockers;
+
+
+
+    // Offset Y for generating objects
+    public float generationYOffset = 0;
+
     // # of objects in each chunk
     public float chunkObjectDensity = 1;
 
@@ -60,11 +76,26 @@ public class WorldGenManager : MonoBehaviour
         }
     }
 
+    private GameObject getRandomGameObjectFromArray(GameObject[] arr){
+        if (arr == null || arr.Length == 0) {
+            return null;
+        }
+
+        int randomIndex = Random.Range(0, arr.Length);
+        return arr[randomIndex];
+    }
+
     private void GenerateChunk(int chunkNumber){
 
-        for(int i = 0; i < chunkObjectDensity; i++){
-            Vector3 objSpawnLoc = transform.position + new Vector3(chunkNumber * chunkLength, 0 , Random.Range(-chunkWidth/2,chunkWidth/2));
-            GameObject building = Instantiate(buildingPrefab, objSpawnLoc, Quaternion.identity, transform);
+        GameObject building;
+        Vector3 objSpawnLoc;
+        objSpawnLoc = transform.position + new Vector3(chunkNumber * chunkLength, 0 + generationYOffset , 0);
+
+        if(chunkNumber == 0){
+            building = Instantiate(getRandomGameObjectFromArray(fillers), objSpawnLoc, Quaternion.identity, transform);
+            return;
+        }else{
+            building = Instantiate(getRandomGameObjectFromArray(cityBlocks), objSpawnLoc, Quaternion.identity, transform);
         }
 
     }
