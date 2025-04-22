@@ -42,10 +42,23 @@ public class UpgradeManager : MonoBehaviour
     // Boucne mod
     public float bounceModifier = 1f;
 
+    // Briefcase Bounce Cooldown
+    public float bounceCooldown = 1f;
+    // Briefcase Bounce Lifetime
+    public float bounceLength = 0.3f;
+
     // Upgrades start
     public List<UpgradeObj> upgrades;
 
     private GameManager GM;
+
+    public float getBounceCooldown(){
+        return bounceCooldown;
+    }
+
+    public float getBounceLength(){
+        return bounceLength;
+    }
 
     public void TravelDistance(float distance){
         currentMoney += (distance * incomeModifier);
@@ -103,6 +116,9 @@ public class UpgradeManager : MonoBehaviour
                 break;
             case "BOUNCE_MOD":
                 bounceModifier += 5f;
+                break;
+            case "COOLDOWN":
+                bounceCooldown -= 1f;
                 break;
             default:
                 break;
