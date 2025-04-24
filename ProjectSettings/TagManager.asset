@@ -9,6 +9,7 @@ TagManager:
   - LaunchManager
   - WorldGeneratorManager
   - UIManager
+  - HitPlayerSound
   layers:
   - Default
   - TransparentFX

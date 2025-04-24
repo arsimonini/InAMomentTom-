@@ -45,6 +45,12 @@ public class PlayerController : MonoBehaviour
     public float contactThreshold = 0.5f;
     private Transform respawnTransform;
 
+    //Audio Source
+    private AudioSource audioPlayer;
+
+    //Sound effect for when player hit ground on initial impact
+    private AudioClip HitGroundSoundClip;
+
     void Start()
     {
         if(!TryGetComponent<Rigidbody>(out rb)){
@@ -62,6 +68,8 @@ public class PlayerController : MonoBehaviour
             briefcase.GetComponent<Renderer>().enabled = false;
             isBriefcaseOn = false;
         }
+
+        //audioPlayer = GetComponent<AudioSource>();
 
     }
 
@@ -196,14 +204,15 @@ public class PlayerController : MonoBehaviour
 
     private void CheckIsPlayerStopped(){
         // If the player has a low enough velocity and has hit the ground reset
-        if(rb.velocity.magnitude <= resetPlayerVelocityThreshold && hasHitGround){
+        if (rb.velocity.magnitude <= resetPlayerVelocityThreshold && hasHitGround){
             GM.ResetPlayer();
         }
     }
 
     void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.tag == "Respawn"){
+        if(collision.gameObject.tag == "Respawn"){  
+            
             hasHitGround = true;
             // Begin the reset timer
             StartResetTimer();
@@ -238,5 +247,12 @@ public class PlayerController : MonoBehaviour
         GM.ResetPlayer();
         resetCoroutine = null;
     }
-    
+
+    public void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.tag == "HitPlayerSound")
+        {
+            audioPlayer.Play();
+        }
+    }
 }
