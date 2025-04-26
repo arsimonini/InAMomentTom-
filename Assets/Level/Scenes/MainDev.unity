@@ -1255,10 +1255,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buildingPrefab: {fileID: 2437738886677209723, guid: 860208129bcbe4cfe8f3917df7c4159e, type: 3}
+  baseplatePrefab: {fileID: 1825866692191432948, guid: 590c66123d859504fad81a26db172a8f, type: 3}
+  fillers:
+  - {fileID: 1825866692191432948, guid: 590c66123d859504fad81a26db172a8f, type: 3}
+  cityBlocks:
+  - {fileID: 471692381413885258, guid: bd30a3e793f45aa46838927c16411866, type: 3}
+  - {fileID: 1203554052956133631, guid: 59fef8c6371f6f84ba0bb45edee2e221, type: 3}
+  - {fileID: 8447285112435315024, guid: e3be726f99d98dc4589ebdcffc147be9, type: 3}
+  - {fileID: 5992632789261431252, guid: bd3e3298bc2b666408ce97be8036043b, type: 3}
+  - {fileID: 3253035342506792359, guid: c322d743e35f74044b8354d8a6d8b40e, type: 3}
+  - {fileID: 5768236959146833720, guid: e658c705a5bf6724dbe445552a7c5950, type: 3}
+  - {fileID: 2240257054754400609, guid: 971d2637de281b54bafd83864f215885, type: 3}
+  blockers:
+  - {fileID: 8776363549960263561, guid: 3632b7f1d07f2224488b55415136dd31, type: 3}
+  - {fileID: 4995431549962711345, guid: 80470cd5fd9b3934f8d50f43d00bb314, type: 3}
+  generationYOffset: -10
   chunkObjectDensity: 2
   chunkCount: 6
   chunkWidth: 120
-  chunkLength: 60
+  chunkLength: 48
   deadZone: 10
 --- !u!4 &432441496
 Transform:
@@ -2213,7 +2228,7 @@ MonoBehaviour:
   startTransform: {fileID: 283871710}
   dragModifier: 0.3
   hasHitGround: 0
-  resetPlayerVelocityThreshold: 0.09
+  resetPlayerVelocityThreshold: 0.1
   resetDelaySeconds: 3
   briefcase: {fileID: 51782313}
   briefcaseOffset: 1
@@ -2525,7 +2540,7 @@ Transform:
   m_GameObject: {fileID: 972028032}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.031261843, y: 2.8500004, z: -7.6411624}
+  m_LocalPosition: {x: 0.031261843, y: 2.8500004, z: 0}
   m_LocalScale: {x: 0.13495447, y: 1, z: 0.11287}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3341,10 +3356,13 @@ MonoBehaviour:
   incomeModifier: 1
   currentMoney: 0
   bounceModifier: 10
+  bounceCooldown: 2
+  bounceLength: 0.3
   upgrades:
   - {fileID: 11400000, guid: b883f258db7974f59b8da6c843de5c13, type: 2}
   - {fileID: 11400000, guid: 2efb2c82b022f438eb18f5c53bb05b2b, type: 2}
   - {fileID: 11400000, guid: 244ed4c6ae4864cf1a9c4bdf56766c5d, type: 2}
+  - {fileID: 11400000, guid: 0e536a84e65cb49928d322cd9cdfd1de, type: 2}
 --- !u!4 &1468355956
 Transform:
   m_ObjectHideFlags: 0
@@ -3685,7 +3703,7 @@ Transform:
   m_GameObject: {fileID: 1583706789}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 145.9, y: -17, z: -7.6411624}
+  m_LocalPosition: {x: 145.9, y: -15.88, z: 0}
   m_LocalScale: {x: 30, y: 1, z: 7.97}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3720,7 +3738,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1583706789}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -4259,7 +4277,7 @@ Transform:
   m_GameObject: {fileID: 1987885303}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.0022621143, y: 6, z: -7.6047816}
+  m_LocalPosition: {x: -0.0022621143, y: 6, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4735,7 +4753,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3572998697765125912, guid: 860208129bcbe4cfe8f3917df7c4159e, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -7.6311626
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3572998697765125912, guid: 860208129bcbe4cfe8f3917df7c4159e, type: 3}
       propertyPath: m_LocalRotation.w
