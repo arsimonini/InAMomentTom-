@@ -35,6 +35,7 @@ public class PlayerController : MonoBehaviour
 
     // Current bounce cooldown timer
     private float currentBounceCooldownTimer = 0;
+    private float currentResetCooldownTimer = 0;
     private bool isOnBounceCooldown = false;
 
     public GameObject briefcase;
@@ -94,20 +95,13 @@ public class PlayerController : MonoBehaviour
         // If the player is launched collect money
         if(GM.GetGameState() == GameState.Launched){
             CalculateDistance();
-
             HandleBriefcaseUpdate();
-        
-            
-        
         }
-
-        
     }
 
     private void HandleBriefcaseUpdate()
     {
         bool canBounce = true;
-
         
         if(isOnBounceCooldown){
             canBounce = false;
@@ -115,6 +109,16 @@ public class PlayerController : MonoBehaviour
             if( currentBounceCooldownTimer >= GM.GetUpgradeManager().getBounceCooldown()){
                 currentBounceCooldownTimer = 0;
                 isOnBounceCooldown = false;
+            }
+        }
+
+        if(isBriefcaseOn){
+            currentResetCooldownTimer += Time.deltaTime;
+            if( currentResetCooldownTimer >= GM.GetUpgradeManager().getBriefcaseMaxDuration()){
+                currentResetCooldownTimer = 0;
+                briefcase.GetComponent<Renderer>().enabled = false;
+                isBriefcaseOn = false;
+                isOnBounceCooldown = true;
             }
         }
         

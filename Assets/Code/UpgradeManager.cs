@@ -56,7 +56,7 @@ public class UpgradeManager : MonoBehaviour
         return bounceCooldown;
     }
 
-    public float getBounceLength(){
+    public float getBriefcaseMaxDuration(){
         return bounceLength;
     }
 
@@ -99,26 +99,34 @@ public class UpgradeManager : MonoBehaviour
     public void UpgradeField(UpgradeObj upgradeObj){
         string upgradeID = upgradeObj.upgradeID;
         float currentCost = upgradeObj.GetCostAtLevel(upgradeObj.GetCurrentLevel());
-        if(currentMoney <= currentCost){
+        if(currentMoney < currentCost){
             return;
         }else{
             currentMoney -= currentCost;
-            upgradeObj.currentLevel++;
+            upgradeObj.Upgrade();
             UpdateUIMoney();
         }
 
         switch (upgradeID){
             case "LAUNCH_POWER":
-                launchPowerModifierUpgrade += 100f;
+                // Standard launch power upgrade
+                launchPowerModifierUpgrade += 200f;
                 break;
             case "DRAG_MOD":
-                movementDragModifier -= 0.001f;
+                // Decreases the drag modifier
+                movementDragModifier -= 0.002f;
                 break;
             case "BOUNCE_MOD":
-                bounceModifier += 5f;
+                // Adds some power to the bounce
+                bounceModifier += 10f;
                 break;
             case "COOLDOWN":
+                // Cooldown decrease
                 bounceCooldown -= 1f;
+                break;
+            case "MONEY":
+                // Income multipler (1x, 1.5x, 2x)
+                incomeModifier += 0.5f;
                 break;
             default:
                 break;
@@ -138,4 +146,5 @@ public class UpgradeManager : MonoBehaviour
     {
         
     }
+
 }

@@ -3356,13 +3356,14 @@ MonoBehaviour:
   incomeModifier: 1
   currentMoney: 0
   bounceModifier: 10
-  bounceCooldown: 2
+  bounceCooldown: 4
   bounceLength: 0.3
   upgrades:
   - {fileID: 11400000, guid: b883f258db7974f59b8da6c843de5c13, type: 2}
   - {fileID: 11400000, guid: 2efb2c82b022f438eb18f5c53bb05b2b, type: 2}
   - {fileID: 11400000, guid: 244ed4c6ae4864cf1a9c4bdf56766c5d, type: 2}
   - {fileID: 11400000, guid: 0e536a84e65cb49928d322cd9cdfd1de, type: 2}
+  - {fileID: 11400000, guid: dcc8295415a5f48f0b38c9399a3b13e6, type: 2}
 --- !u!4 &1468355956
 Transform:
   m_ObjectHideFlags: 0
@@ -3674,6 +3675,7 @@ MonoBehaviour:
   buttonUpgrade: {fileID: 1608418943}
   upgradeButtonContainerPanel: {fileID: 1421349881}
   upgradeButtonPrefab: {fileID: 91088236821452836, guid: e05e0bc0097da4d399e95f22b167d903, type: 3}
+  upgradeButtons: []
 --- !u!1 &1583706789
 GameObject:
   m_ObjectHideFlags: 0

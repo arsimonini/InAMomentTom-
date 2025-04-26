@@ -25,7 +25,7 @@ public class UpgradeObj : ScriptableObject
     }
 
     public void Upgrade(){
-        if(currentLevel < numLevels - 1){
+        if(currentLevel < numLevels){
             currentLevel++;
         }
     }
