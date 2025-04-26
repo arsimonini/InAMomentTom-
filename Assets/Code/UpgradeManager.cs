@@ -124,6 +124,9 @@ public class UpgradeManager : MonoBehaviour
                 // Cooldown decrease
                 bounceCooldown -= 1f;
                 break;
+            case "BOUNCE_LIFESPAN":
+                bounceLength += 0.5f;
+                break;
             case "MONEY":
                 // Income multipler (1x, 1.5x, 2x)
                 incomeModifier += 0.5f;
